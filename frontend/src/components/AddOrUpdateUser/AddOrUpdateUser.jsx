@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import './AddOrUpdateUser.css'; // Importer le fichier CSS pour le style
-import { createUser, updateUser, updateUserById } from '../../services/UserServices';
+import './AddOrUpdateUser.css';
+import { createUser, updateUser } from '../../services/UserServices';
 
 function AddOrUpdateUser() {
   const navigate = useNavigate();
