@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL } from '../constants/Constants';
+import { BASE_URL } from '../utils/Constants';
 
 export const getAllUsers = (page) => {
     return axios.get(BASE_URL + `users/?page=${page}`);

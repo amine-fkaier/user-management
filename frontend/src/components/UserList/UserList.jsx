@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './UserList.css';
 import { deleteUser, getAllUsers } from '../../services/UserServices';
+import { GENDRE } from '../../utils/Constants';
 
 function UserList() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const ref = useRef(null);
   const [users, setUsers] = useState([]);
   const [filterCriteria, setFilterCriteria] = useState('');
   const [page, setPage] = useState(1);
@@ -16,18 +19,21 @@ function UserList() {
       setUsers(response.data.users);
       setTotalPages(response.data.total_pages);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error("Erreur lors de la récuperation des utilisateurs: ", error);
     }
   };
 
   useEffect(() => {
-    fetchUsers();
+    if(location){
+      fetchUsers();
+    }
   }, []);
 
  
   useEffect(() => {
     fetchUsers();
   }, [page]);
+
 
   const handleNextPage = () => {
     setPage(prevPage => prevPage + 1);
@@ -56,18 +62,18 @@ function UserList() {
   
 
 
-  const handleDelete = id => {
-    const confirmDelete = window.confirm(`Are you sure you want to delete user with ID ${id}?`);
+  const handleDelete = user => {
+    const confirmDelete = window.confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur ${user.firstname} ${user.lastname} ?`);
     if (confirmDelete) {
-      deleteUser(id).then(response => {
+      deleteUser(user.id).then(() => {
         fetchUsers()
       })
       .catch(error => {
-        console.error('Error fetching users:', error);
+        console.error("Erreur lors de la suppression d'un utilisateur :", error);
       });
-      window.alert(`User with ID ${id} has been deleted.`);
+      window.alert(`L'utilisateur ${user.firstname} ${user.lastname} a été supprimé.`);
     } else {
-      window.alert("Deletion canceled.");
+      window.alert("Suppression annulée.");
     }
   };
 
@@ -93,22 +99,22 @@ function UserList() {
           <li key={user.id} className="user-item">
             <div>
               <span className="user-name">{user.firstname} {user.lastname}</span>
-              <button className="delete-button" onClick={() => handleDelete(user.id)}>Supprimer</button>
+              <button className="delete-button" onClick={() => handleDelete(user)}>Supprimer</button>
               <button onClick={() => navigateToUpdateUserScreen(user)} className="edit-button">Modifier</button>
             </div>
             <div className="user-details">
-              <span>Age: {user.age}</span>
-              <span>Gender: {user.gender}</span>
-              <span>City: {user.city}</span>
+              <span>Âge: {user.age}</span>
+              <span>Genre: {GENDRE[user.gender]}</span>
+              <span>Ville: {user.city}</span>
             </div>
             {index === filteredUsers.length - 1 && <div className="user-list-end-marker" />}
           </li>
         ))}
       </ul>
       <div className="pagination">
-        <button onClick={handlePrevPage} disabled={page === 1}>Previous</button>
+        <button onClick={handlePrevPage} disabled={page === 1}>Précédent</button>
         <span>{page} / {totalPages}</span>
-        <button onClick={handleNextPage} disabled={page === totalPages}>Next</button>
+        <button onClick={handleNextPage} disabled={page === totalPages}>Suivant</button>
       </div>
       <button onClick={navigateToAddUserScreen} className="fab">+</button>
     </div>
