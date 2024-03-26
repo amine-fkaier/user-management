@@ -51,11 +51,11 @@ function AddOrUpdateUser() {
   
     if (!editing) {
       createUser(user).catch(error => {
-        console.error("Erreur lors de la création d'un nouveau utilisateur:", error);
+        alert("Erreur lors de la création d'un nouveau utilisateur: " + error.message);
       });
     } else {
       updateUser(user.id, user).catch(error => {
-        console.error("Erreur lors de la mise à jour de l'utilisateur :", error);
+        alert("Erreur lors de la mise à jour de l'utilisateur : " + error.message);
       });
     }
 

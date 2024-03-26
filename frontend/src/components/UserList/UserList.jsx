@@ -19,7 +19,7 @@ function UserList() {
       setUsers(response.data.users);
       setTotalPages(response.data.total_pages);
     } catch (error) {
-      console.error("Erreur lors de la récuperation des utilisateurs: ", error);
+      alert("Erreur lors de la récupération des utilisateurs: " + error.message);
     }
   };
 
@@ -69,7 +69,7 @@ function UserList() {
         fetchUsers()
       })
       .catch(error => {
-        console.error("Erreur lors de la suppression d'un utilisateur :", error);
+        alert("Erreur lors de la suppression d'un utilisateur : " + error.message);
       });
       window.alert(`L'utilisateur ${user.firstname} ${user.lastname} a été supprimé.`);
     } else {
