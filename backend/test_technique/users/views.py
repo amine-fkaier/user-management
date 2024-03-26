@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, JsonResponse
-from django.template import loader
+from django.http import JsonResponse
 from .models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .serializers import UserSerializer
@@ -21,7 +20,9 @@ def get_users(request):
         users = paginator.page(paginator.num_pages)
 
     serializer = UserSerializer(users, many=True)
-    return JsonResponse(serializer.data, safe=False)
+
+    total_users = User.objects.count() 
+    return JsonResponse({'users': serializer.data, 'total_pages': (total_users // 10)+1}, safe=False)
 
 
 def get_user(user_id):
@@ -40,7 +41,6 @@ def create_user(request):
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
         
         serializer = UserSerializer(data=data)
-        print(serializer)
         if serializer.is_valid():
             serializer.save()
         return JsonResponse({'message': 'User created successfully'}, status=200)

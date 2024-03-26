@@ -1,9 +1,8 @@
 import axios from 'axios';
+import { BASE_URL } from '../constants/Constants';
 
-const BASE_URL = 'http://localhost:8000/';
-
-export const getAllUsers = () => {
-    return axios.get(BASE_URL + "users/?page=1");
+export const getAllUsers = (page) => {
+    return axios.get(BASE_URL + `users/?page=${page}`);
 };
 
 export const getUserById = (userId) => {
@@ -18,6 +17,6 @@ export const updateUser = (userId, updatedUserData) => {
     return axios.put(BASE_URL + `user/${userId}/update/`, updatedUserData);
 };
 
-export const deleteUserById = (userId) => {
+export const deleteUser = (userId) => {
     return axios.delete(BASE_URL + `user/${userId}/delete/`);
 };

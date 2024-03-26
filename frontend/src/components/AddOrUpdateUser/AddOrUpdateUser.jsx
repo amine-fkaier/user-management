@@ -50,17 +50,11 @@ function AddOrUpdateUser() {
     }
   
     if (!editing) {
-      createUser(user).then(response => { 
-        console.log({response})
-      })
-      .catch(error => {
+      createUser(user).catch(error => {
         console.error('Error creating user:', error);
       });
     } else {
-      updateUser(user.id, user).then(response => { 
-        console.log({response})
-      })
-      .catch(error => {
+      updateUser(user.id, user).catch(error => {
         console.error('Error updating user:', error);
       });
     }
